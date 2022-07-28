@@ -10,9 +10,12 @@ mvpics_main() {
 	e_args=16
 	e_missing_app=17
 
-	while getopts h opt
+	date_folders=0
+
+	while getopts dh opt
 	do
 		case $opt in
+			d) date_folders=1 ;;
 			h) mvpics_usage && return ;;
 			*) _invalid_opt ;;
 		esac
@@ -39,11 +42,16 @@ mvpics_process() {
 
 	src="$1"
 	dst="$2"
+	pattern="$dst/%Y/%Y-%m"
+
+	[ $date_folders -ne 0 ] && pattern="$pattern/%Y%m%d"
+
+	pattern="$pattern/%Y%m%d-%H%M%S_%%f.%%e"
 
 	exiftool \
 		'-FileName<CreateDate' \
 		-progress \
-		-d "$dst/%Y/%Y-%m/%Y%m%d-%H%M%S_%%f.%%e" \
+		-d "$pattern" \
 		-r "$src" \
 		;
 }
@@ -61,6 +69,9 @@ directory of a memory card into dated folders on another volume
 Requires exiftool.
 
 Available options:
+
+	-d        Categorize files into date folders as well,
+	          not just years and months.
 
 	-h        Show this help screen.
 

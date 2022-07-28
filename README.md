@@ -14,7 +14,9 @@ Requires exiftool.
 
 Available options:
 
+	-d        Categorize files into date folders as well,
+	          not just years and months.
+
 	-h        Show this help screen.
 
 ```
-
